@@ -13,7 +13,7 @@ class CategoryMovieSchema extends Schema {
   }
 
   down() {
-    this.drop("category_movies");
+    this.drop("category_movie");
   }
 }
 
