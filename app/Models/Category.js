@@ -4,6 +4,11 @@
 const Model = use("Model");
 
 class Category extends Model {
+  static boot() {
+    super.boot();
+    this.addHook("beforeCreate", "GenerateSlugHook.create");
+  }
+
   movies() {
     return this.belongsToMany("App/Models/Movie");
   }
