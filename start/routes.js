@@ -21,6 +21,13 @@ Route.get("/", () => {
 });
 
 Route.group(() => {
-  Route.get("movie", "MovieController.index");
-  Route.post("movie", "MovieController.store").validator("StoreMovie");
+  Route.get("movies", "MovieController.index");
+  // optional asSlug parameter accepts 1 (true) to search for the movie with the slug identifier
+  // such as /movies/the-batman-b842e08c-71ad-4e8d-a0d6-672f3d09a954/1
+  // otherwise search for the movie with the id identifier
+  // such as /movies/15
+  Route.get("movies/:id/:asSlug?", "MovieController.show").middleware(
+    "findMovie"
+  );
+  Route.post("movies", "MovieController.store").validator("StoreMovie");
 }).prefix("api/v1");

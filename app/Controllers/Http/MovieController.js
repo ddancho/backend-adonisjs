@@ -5,7 +5,9 @@ const Movie = use("App/Models/Movie");
 class MovieController {
   async index({ response }) {
     const movies = await Movie.query()
-      .with("categories", (builder) => builder.select("title"))
+      .with("categories", (builder) =>
+        builder.select("title", "is_active", "slug")
+      )
       .fetch();
 
     return response.status(200).json({
@@ -31,6 +33,13 @@ class MovieController {
         error,
       });
     }
+  }
+
+  async show({ request, response }) {
+    response.ok({
+      message: "Requested movie record found",
+      data: request.movie,
+    });
   }
 }
 
