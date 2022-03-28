@@ -1,6 +1,7 @@
 "use strict";
 
 const Movie = use("App/Models/Movie");
+const Database = use("Database");
 
 class MovieController {
   async index({ response }) {
@@ -40,6 +41,33 @@ class MovieController {
       message: "Requested movie record found",
       data: request.movie,
     });
+  }
+
+  async delete({ request, response }) {
+    const movie = request.movie;
+
+    const trx = await Database.beginTransaction();
+
+    await movie.save(trx);
+
+    try {
+      await movie.categories().delete();
+
+      await movie.delete();
+
+      await trx.commit();
+
+      response.ok({
+        message: "Successfully deleted movie",
+      });
+    } catch (error) {
+      await trx.rollback();
+
+      return response.status(500).send({
+        message: "Something went wrong",
+        error,
+      });
+    }
   }
 }
 

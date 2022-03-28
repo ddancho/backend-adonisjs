@@ -54,7 +54,7 @@ class FindMovie {
 
     await movie.load("categories");
 
-    request.movie = movie.toJSON();
+    request.movie = movie;
 
     await next();
   }

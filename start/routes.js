@@ -30,4 +30,8 @@ Route.group(() => {
     "findMovie"
   );
   Route.post("movies", "MovieController.store").validator("StoreMovie");
+  // same logic to routing as with get one movie
+  Route.delete("movies/:id/:asSlug?", "MovieController.delete").middleware(
+    "findMovie"
+  );
 }).prefix("api/v1");
