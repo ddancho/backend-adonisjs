@@ -10,7 +10,9 @@ class Movie extends Model {
   }
 
   categories() {
-    return this.belongsToMany("App/Models/Category");
+    return this.belongsToMany("App/Models/Category").pivotModel(
+      "App/Models/MovieCategory"
+    );
   }
 }
 

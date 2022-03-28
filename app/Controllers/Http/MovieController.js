@@ -1,14 +1,14 @@
 "use strict";
 
 const Movie = use("App/Models/Movie");
+const Category = use("App/Models/Category");
+const Pivot = use("App/Models/MovieCategory");
 const Database = use("Database");
 
 class MovieController {
   async index({ response }) {
     const movies = await Movie.query()
-      .with("categories", (builder) =>
-        builder.select("title", "is_active", "slug")
-      )
+      .with("categories", (builder) => builder.select("title"))
       .fetch();
 
     return response.status(200).json({
@@ -18,17 +18,54 @@ class MovieController {
   }
 
   async store({ request, response }) {
+    const trx = await Database.beginTransaction();
+
     try {
       const { title, description, author, rating, categories } = request.post();
 
-      const movie = await Movie.create({ title, description, author, rating });
-      await movie.categories().createMany(categories);
+      // get movie category titles into array
+      const categoryTitles = categories.map((c) => c.title);
+
+      // check if the category titles are set active, if not update
+      await Category.query(trx)
+        .where("is_active", 0)
+        .whereIn("title", categoryTitles)
+        .update({ is_active: 1 });
+
+      // get category models required for this movie
+      const categoryData = (
+        await Category.query(trx).whereIn("title", categoryTitles).fetch()
+      ).toJSON();
+
+      // create movie record
+      const movie = await Movie.create(
+        { title, description, author, rating },
+        trx
+      );
+      const movieData = movie.toJSON();
+
+      // prepare data for the pivot table
+      // create array [{category_id, movie_id}]
+      const pivotData = categoryData.map((c) => {
+        return {
+          category_id: c.id,
+          movie_id: movieData.id,
+        };
+      });
+
+      // create pivot record(s)
+      await Pivot.createMany(pivotData, trx);
+
+      // go go go
+      await trx.commit();
 
       return response.created({
         message: "Successfully created a new movie record",
         data: movie,
       });
     } catch (error) {
+      await trx.rollback();
+
       return response.status(500).send({
         message: "Something went wrong",
         error,

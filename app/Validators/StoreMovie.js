@@ -13,7 +13,6 @@ class StoreMovie {
       rating: "required|integer",
       //rating: "required|integer|range:1,10",
       "categories.*.title": "required|string",
-      "categories.*.is_active": "required|boolean",
     };
   }
 
@@ -24,7 +23,6 @@ class StoreMovie {
       author: "trim|escape|strip_links|strip_tags",
       rating: "trim|escape|strip_links|strip_tags|to_Int",
       "categories.*.title": "trim|escape|strip_links|strip_tags",
-      "categories.*.is_active": "trim|escape|strip_links|strip_tags|to_Boolean",
     };
   }
 
@@ -42,9 +40,6 @@ class StoreMovie {
       "categories.*.title.required": "Category.title field is required",
       "categories.*.title.string":
         "Category.title data type has to be a string",
-      "categories.*.is_active.required": "Category.is_active field is required",
-      "categories.*.is_active.boolean":
-        "Category.is_active data type has to be a boolean",
     };
   }
 
