@@ -21,6 +21,7 @@ Route.get("/", () => {
 });
 
 Route.group(() => {
+  /*-------------------------- Movie Controller routes -------------------------------------- */
   Route.get("movies", "MovieController.index");
   // optional asSlug parameter accepts 1 (true) to search for the movie with the slug identifier
   // such as /movies/the-batman-b842e08c-71ad-4e8d-a0d6-672f3d09a954/1
@@ -37,5 +38,11 @@ Route.group(() => {
   // same logic to routing as with get one movie
   Route.delete("movies/:id/:asSlug?", "MovieController.delete").middleware(
     "findMovie"
+  );
+
+  /*-------------------------- Category Controller routes -------------------------------------- */
+  Route.get("categories", "CategoryController.index");
+  Route.post("categories", "CategoryController.store").validator(
+    "StoreCategory"
   );
 }).prefix("api/v1");
