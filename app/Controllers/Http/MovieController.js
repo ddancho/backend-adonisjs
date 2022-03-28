@@ -43,6 +43,30 @@ class MovieController {
     });
   }
 
+  async update({ request, response }) {
+    const movie = request.movie;
+    const { title, description, author, rating } = request.post();
+
+    try {
+      movie.title = title;
+      movie.description = description;
+      movie.author = author;
+      movie.rating = rating;
+
+      await movie.save();
+
+      response.ok({
+        message: "Successfully updated movie",
+        data: movie,
+      });
+    } catch (error) {
+      return response.status(500).send({
+        message: "Something went wrong",
+        error,
+      });
+    }
+  }
+
   async delete({ request, response }) {
     const movie = request.movie;
 

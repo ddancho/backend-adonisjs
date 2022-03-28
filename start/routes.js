@@ -31,6 +31,10 @@ Route.group(() => {
   );
   Route.post("movies", "MovieController.store").validator("StoreMovie");
   // same logic to routing as with get one movie
+  Route.patch("movies/:id/:asSlug?", "MovieController.update")
+    .middleware("findMovie")
+    .validator("UpdateMovie");
+  // same logic to routing as with get one movie
   Route.delete("movies/:id/:asSlug?", "MovieController.delete").middleware(
     "findMovie"
   );
