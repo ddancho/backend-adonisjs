@@ -38,6 +38,7 @@ const namedMiddleware = {
   auth: "Adonis/Middleware/Auth",
   guest: "Adonis/Middleware/AllowGuestOnly",
   findMovie: "App/Middleware/FindMovie",
+  findCategory: "App/Middleware/FindCategory",
 };
 
 /*

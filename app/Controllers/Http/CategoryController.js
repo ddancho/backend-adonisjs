@@ -31,6 +31,13 @@ class CategoryController {
       });
     }
   }
+
+  async show({ request, response }) {
+    response.ok({
+      message: "Requested category record found",
+      data: request.category,
+    });
+  }
 }
 
 module.exports = CategoryController;

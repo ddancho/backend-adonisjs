@@ -42,6 +42,9 @@ Route.group(() => {
 
   /*-------------------------- Category Controller routes -------------------------------------- */
   Route.get("categories", "CategoryController.index");
+  Route.get("categories/:id/:asSlug?", "CategoryController.show").middleware(
+    "findCategory"
+  );
   Route.post("categories", "CategoryController.store").validator(
     "StoreCategory"
   );
