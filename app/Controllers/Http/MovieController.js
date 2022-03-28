@@ -112,7 +112,9 @@ class MovieController {
     await movie.save(trx);
 
     try {
-      await movie.categories().delete();
+      const movieId = movie.toJSON().id;
+
+      await Pivot.query(trx).where("movie_id", movieId).delete();
 
       await movie.delete();
 
