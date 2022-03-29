@@ -82,13 +82,10 @@ class MovieController {
 
   async update({ request, response }) {
     const movie = request.movie;
-    const { title, description, author, rating } = request.post();
+    const data = request.post();
 
     try {
-      movie.title = title;
-      movie.description = description;
-      movie.author = author;
-      movie.rating = rating;
+      movie.merge(data);
 
       await movie.save();
 

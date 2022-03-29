@@ -7,10 +7,10 @@ class UpdateMovie {
 
   get rules() {
     return {
-      title: "required|string",
-      description: "required|string",
-      author: "required|string",
-      rating: "required|integer",
+      title: "string",
+      description: "string",
+      author: "string",
+      rating: "integer",
     };
   }
 
