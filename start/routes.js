@@ -55,4 +55,8 @@ Route.group(() => {
   Route.patch("categories/:id/:asSlug?", "CategoryController.update")
     .middleware("findCategory")
     .validator("UpdateCategory");
+  Route.delete(
+    "categories/:id/:asSlug?",
+    "CategoryController.delete"
+  ).middleware("findCategory");
 }).prefix("api/v1");

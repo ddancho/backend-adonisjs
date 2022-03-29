@@ -1,6 +1,8 @@
 "use strict";
 
 const Category = use("App/Models/Category");
+const Pivot = use("App/Models/MovieCategory");
+const Database = use("Database");
 
 class CategoryController {
   async index({ response }) {
@@ -53,6 +55,35 @@ class CategoryController {
         data: category,
       });
     } catch (error) {
+      return response.status(500).send({
+        message: "Something went wrong",
+        error,
+      });
+    }
+  }
+
+  async delete({ request, response }) {
+    const category = request.category;
+
+    const trx = await Database.beginTransaction();
+
+    await category.save(trx);
+
+    try {
+      const categoryId = category.toJSON().id;
+
+      await Pivot.query(trx).where("category_id", categoryId).delete();
+
+      await category.delete();
+
+      await trx.commit();
+
+      response.ok({
+        message: "Successfully deleted category",
+      });
+    } catch (error) {
+      await trx.rollback();
+
       return response.status(500).send({
         message: "Something went wrong",
         error,
