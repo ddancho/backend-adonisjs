@@ -22,25 +22,29 @@ Route.get("/", () => {
 
 Route.group(() => {
   /*-------------------------- Movie Controller routes -------------------------------------- */
-  Route.get("movies", "MovieController.index");
   // optional asSlug parameter accepts 1 (true) to search for the movie with the slug identifier
   // such as /movies/the-batman-b842e08c-71ad-4e8d-a0d6-672f3d09a954/1
-  // otherwise search for the movie with the id identifier
+  // otherwise search is done for the movie with the id identifier
   // such as /movies/15
+  /*----------------------------------------------------------------------------------------- */
+  Route.get("movies", "MovieController.index");
   Route.get("movies/:id/:asSlug?", "MovieController.show").middleware(
     "findMovie"
   );
   Route.post("movies", "MovieController.store").validator("StoreMovie");
-  // same logic to routing as with get one movie
   Route.patch("movies/:id/:asSlug?", "MovieController.update")
     .middleware("findMovie")
     .validator("UpdateMovie");
-  // same logic to routing as with get one movie
   Route.delete("movies/:id/:asSlug?", "MovieController.delete").middleware(
     "findMovie"
   );
 
   /*-------------------------- Category Controller routes -------------------------------------- */
+  // optional asSlug parameter accepts 1 (true) to search for the category with the slug identifier
+  // such as /category/action-0f511e57-c1f1-4fa8-9de1-c5140a1a16b8/1
+  // otherwise search is done for the category with the id identifier
+  // such as /category/15
+  /*----------------------------------------------------------------------------------------- */
   Route.get("categories", "CategoryController.index");
   Route.get("categories/:id/:asSlug?", "CategoryController.show").middleware(
     "findCategory"
@@ -48,4 +52,7 @@ Route.group(() => {
   Route.post("categories", "CategoryController.store").validator(
     "StoreCategory"
   );
+  Route.patch("categories/:id/:asSlug?", "CategoryController.update")
+    .middleware("findCategory")
+    .validator("UpdateCategory");
 }).prefix("api/v1");

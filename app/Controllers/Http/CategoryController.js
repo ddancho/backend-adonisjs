@@ -38,6 +38,27 @@ class CategoryController {
       data: request.category,
     });
   }
+
+  async update({ request, response }) {
+    const category = request.category;
+    const data = request.post();
+
+    try {
+      category.merge(data);
+
+      await category.save();
+
+      response.ok({
+        message: "Successfully updated category",
+        data: category,
+      });
+    } catch (error) {
+      return response.status(500).send({
+        message: "Something went wrong",
+        error,
+      });
+    }
+  }
 }
 
 module.exports = CategoryController;

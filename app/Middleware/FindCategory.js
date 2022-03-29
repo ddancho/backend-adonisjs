@@ -17,6 +17,15 @@ class FindCategory {
   async handle({ request, response, params: { id, asSlug } }, next) {
     let category = null;
 
+    if (
+      request.method() === "PATCH" &&
+      Object.keys(request.post()).length === 0
+    ) {
+      return response.status(400).json({
+        message: "Nothing to update",
+      });
+    }
+
     if (asSlug) {
       // sanitize id and asSlug query parameters
       const data = this.sanitizeIdAndSlug(id, asSlug);
