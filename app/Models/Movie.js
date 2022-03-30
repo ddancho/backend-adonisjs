@@ -7,6 +7,7 @@ class Movie extends Model {
   static boot() {
     super.boot();
     this.addHook("beforeCreate", "GenerateSlugHook.create");
+    this.addTrait("MovieLength");
   }
 
   categories() {

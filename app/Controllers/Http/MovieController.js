@@ -17,11 +17,30 @@ class MovieController {
     });
   }
 
+  async filter({ request, response }) {
+    const movies = await Movie.query()
+      .with("categories", (builder) => builder.select("title"))
+      .filter(request.filterData)
+      .fetch();
+
+    return response.status(200).json({
+      message: "Filter Movies",
+      data: movies,
+    });
+  }
+
   async store({ request, response }) {
     const trx = await Database.beginTransaction();
 
     try {
-      const { title, description, author, rating, categories } = request.post();
+      const {
+        title,
+        description,
+        author,
+        rating,
+        movieLength: movie_length,
+        categories,
+      } = request.post();
 
       // get movie category titles into array
       const categoryTitles = categories.map((c) => c.title);
@@ -39,7 +58,7 @@ class MovieController {
 
       // create movie record
       const movie = await Movie.create(
-        { title, description, author, rating },
+        { title, description, author, rating, movie_length },
         trx
       );
       const movieData = movie.toJSON();

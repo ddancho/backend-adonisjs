@@ -11,6 +11,7 @@ class StoreMovie {
       description: "required|string",
       author: "required|string",
       rating: "required|integer",
+      movieLength: "required|integer",
       //rating: "required|integer|range:1,10",
       "categories.*.title": "required|string",
     };
@@ -22,6 +23,7 @@ class StoreMovie {
       description: "trim|escape|strip_links|strip_tags",
       author: "trim|escape|strip_links|strip_tags",
       rating: "trim|escape|strip_links|strip_tags|to_Int",
+      movieLength: "trim|escape|strip_links|strip_tags|to_Int",
       "categories.*.title": "trim|escape|strip_links|strip_tags",
     };
   }
@@ -36,6 +38,8 @@ class StoreMovie {
       "author.string": "Author data type has to be a string",
       "rating.required": "Rating field is required",
       "rating.integer": "Rating data type has to be a integer",
+      "movieLength.required": "MovieLength field is required",
+      "movieLength.integer": "MovieLength data type has to be a integer",
       //"rating.range": "Rating range is 1 to 10",
       "categories.*.title.required": "Category.title field is required",
       "categories.*.title.string":

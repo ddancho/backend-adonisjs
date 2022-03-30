@@ -11,6 +11,7 @@ class UpdateMovie {
       description: "string",
       author: "string",
       rating: "integer",
+      movieLength: "integer",
     };
   }
 
@@ -20,6 +21,7 @@ class UpdateMovie {
       description: "trim|escape|strip_links|strip_tags",
       author: "trim|escape|strip_links|strip_tags",
       rating: "trim|escape|strip_links|strip_tags|to_Int",
+      movieLength: "trim|escape|strip_links|strip_tags|to_Int",
     };
   }
 
@@ -33,6 +35,8 @@ class UpdateMovie {
       "author.string": "Author data type has to be a string",
       "rating.required": "Rating field is required",
       "rating.integer": "Rating data type has to be a integer",
+      "movieLength.required": "MovieLength field is required",
+      "movieLength.integer": "MovieLength data type has to be a integer",
     };
   }
 

@@ -28,6 +28,15 @@ Route.group(() => {
   // such as /movies/15
   /*----------------------------------------------------------------------------------------- */
   Route.get("movies", "MovieController.index");
+  /*------------------------------- filter route -------------------------------------------- */
+  // accepts query strings parameters comparison and duration
+  // comparison : greater, less
+  // duration : movie length in minutes
+  // movies/filter/?comparison=greater&duration=50
+  /*----------------------------------------------------------------------------------------- */
+  Route.get("movies/filter", "MovieController.filter").middleware(
+    "filterMovie"
+  );
   Route.get("movies/:id/:asSlug?", "MovieController.show").middleware(
     "findMovie"
   );

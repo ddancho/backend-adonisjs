@@ -39,6 +39,7 @@ const namedMiddleware = {
   guest: "Adonis/Middleware/AllowGuestOnly",
   findMovie: "App/Middleware/FindMovie",
   findCategory: "App/Middleware/FindCategory",
+  filterMovie: "App/Middleware/FilterMovie",
 };
 
 /*
