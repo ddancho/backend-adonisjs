@@ -11,6 +11,10 @@ class Movie extends Model {
     this.addTrait("MovieLength");
   }
 
+  static get hidden() {
+    return ["created_at", "updated_at"];
+  }
+
   categories() {
     return this.belongsToMany("App/Models/Category").pivotModel(
       "App/Models/MovieCategory"
