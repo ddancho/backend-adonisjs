@@ -29,10 +29,12 @@ Route.group(() => {
   /*----------------------------------------------------------------------------------------- */
   Route.get("movies", "MovieController.index");
   /*------------------------------- filter route -------------------------------------------- */
-  // accepts query strings parameters comparison and duration
+  // accepts query strings parameters comparison, duration and page
   // comparison : greater, less
   // duration : movie length in minutes
-  // movies/filter/?comparison=greater&duration=50
+  // page : page input for pagination (if not present in the qs defaults to 1)
+  // pageSize : pageSize input for pagination (if not present in the qs defaults to 3)
+  // movies/filter/?comparison=greater&duration=50&page=1
   /*----------------------------------------------------------------------------------------- */
   Route.get("movies/filter", "MovieController.filter").middleware(
     "filterMovie"

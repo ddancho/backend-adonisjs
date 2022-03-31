@@ -18,14 +18,18 @@ class MovieController {
   }
 
   async filter({ request, response }) {
-    const movies = await Movie.query()
-      .with("categories", (builder) => builder.select("title"))
-      .filter(request.filterData)
-      .fetch();
+    // const movies = await Movie.query()
+    //   .with("categories", (builder) => builder.select("title"))
+    //   .filter(request.filterData)
+    //   .fetch();
+
+    const { data: records, ...rest } = (
+      await Movie.filterAndPaginate(request.filterData)
+    ).toJSON();
 
     return response.status(200).json({
-      message: "Filter Movies",
-      data: movies,
+      message: "Filter and paginated movies list",
+      data: { ...rest, records },
     });
   }
 
