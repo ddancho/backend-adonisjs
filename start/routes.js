@@ -70,4 +70,31 @@ Route.group(() => {
     "categories/:id/:asSlug?",
     "CategoryController.delete"
   ).middleware("findCategory");
+
+  /*-------------------------- User Controller routes -------------------------------------- */
+  // register route expect 4 values in the body : username, email, password, password_confirmation
+  // login route expect 2 values in the body : email, password and return jwt token
+  // logout route is guarded with auth middleware, use jwt token
+  /*----------------------------------------------------------------------------------------- */
+  Route.post("users/register", "UserController.store")
+    .middleware("guest")
+    .validator("RegisterUser");
+
+  Route.post("users/login", "UserController.login")
+    .middleware("guest")
+    .validator("LoginUser");
+
+  Route.get("users/signInUser", "UserController.show").middleware("auth");
+
+  Route.post("users/newAccessTokens", "UserController.newAccessTokens")
+    .middleware("auth")
+    .validator("RefreshToken");
+
+  Route.post("users/revokeToken", "UserController.revokeToken")
+    .middleware("auth")
+    .validator("RefreshToken");
+
+  Route.post("users/logout", "UserController.destroy")
+    .middleware("auth")
+    .validator("RefreshToken");
 }).prefix("api/v1");
