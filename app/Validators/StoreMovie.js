@@ -13,7 +13,7 @@ class StoreMovie {
       rating: "required|integer",
       movieLength: "required|integer",
       //rating: "required|integer|range:1,10",
-      "categories.*.title": "required|string",
+      "categories.*.title": "required|string|isExists:categories,title",
     };
   }
 
@@ -44,6 +44,7 @@ class StoreMovie {
       "categories.*.title.required": "Category.title field is required",
       "categories.*.title.string":
         "Category.title data type has to be a string",
+      "categories.*.title.isExists": "Unknow category title",
     };
   }
 
