@@ -25,6 +25,12 @@ const providers = [
     "providers",
     "CustomValidatorRules/CategoryRulesProvider"
   ),
+  path.join(
+    __dirname,
+    "..",
+    "providers",
+    "Category/CategoryRepositoryProvider"
+  ),
 ];
 
 /*

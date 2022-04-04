@@ -4,6 +4,7 @@ const Movie = use("App/Models/Movie");
 const Category = use("App/Models/Category");
 const Pivot = use("App/Models/MovieCategory");
 const Database = use("Database");
+const CategoryRepository = use("Category/Repository");
 
 class MovieController {
   async index({ response }) {
@@ -46,35 +47,19 @@ class MovieController {
         categories,
       } = request.post();
 
-      // get movie category titles into array
-      const categoryTitles = categories.map((c) => c.title);
-
-      // check if the category titles are set active, if not update
-      await Category.query(trx)
-        .where("is_active", 0)
-        .whereIn("title", categoryTitles)
-        .update({ is_active: 1 });
-
-      // get category models required for this movie
-      const categoryData = (
-        await Category.query(trx).whereIn("title", categoryTitles).fetch()
-      ).toJSON();
+      // set is_active if necessary
+      await CategoryRepository.setIsActive(trx, categories);
 
       // create movie record
       const movie = await Movie.create(
         { title, description, author, rating, movie_length },
         trx
       );
-      const movieData = movie.toJSON();
 
-      // prepare data for the pivot table
-      // create array [{category_id, movie_id}]
-      const pivotData = categoryData.map((c) => {
-        return {
-          category_id: c.id,
-          movie_id: movieData.id,
-        };
-      });
+      const movieId = movie.toJSON().id;
+
+      // prepare data for pivot table
+      const pivotData = await CategoryRepository.getPivotData(trx, movieId);
 
       // create pivot record(s)
       await Pivot.createMany(pivotData, trx);
