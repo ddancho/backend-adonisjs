@@ -78,14 +78,18 @@ class MovieController {
         rating,
         movieLength: movie_length,
         categories,
+        movieDetails,
       } = request.post();
+
+      // movie details are not required
+      const movie_details = movieDetails ? JSON.stringify(movieDetails) : "{}";
 
       // set is_active if necessary
       await CategoryRepository.setIsActive(trx, categories);
 
       // create movie record
       const movie = await Movie.create(
-        { title, description, author, rating, movie_length },
+        { title, description, author, rating, movie_length, movie_details },
         trx
       );
 
@@ -123,7 +127,18 @@ class MovieController {
 
   async update({ request, response }) {
     const movie = request.movie;
-    const data = request.post();
+    const {
+      movieLength: movie_length,
+      movieDetails: movie_details,
+      ...data
+    } = request.post();
+
+    if (movie_length) {
+      data.movie_length = movie_length;
+    }
+    if (movie_details) {
+      data.movie_details = JSON.stringify(movie_details);
+    }
 
     try {
       movie.merge(data);

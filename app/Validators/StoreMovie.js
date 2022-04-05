@@ -12,6 +12,7 @@ class StoreMovie {
       author: "required|string",
       rating: "required|integer",
       movieLength: "required|integer",
+      movieDetails: "json",
       //rating: "required|integer|range:1,10",
       "categories.*.title": "required|string|isExists:categories,title",
     };
@@ -25,7 +26,20 @@ class StoreMovie {
       rating: "trim|escape|strip_links|strip_tags|to_Int",
       movieLength: "trim|escape|strip_links|strip_tags|to_Int",
       "categories.*.title": "trim|escape|strip_links|strip_tags",
+      movieDetails: "trim|escape|strip_links|strip_tags",
     };
+  }
+
+  get data() {
+    const requestBody = this.ctx.request.all();
+
+    if (requestBody.movieDetails) {
+      requestBody.movieDetails = requestBody.movieDetails
+        ? JSON.stringify(requestBody.movieDetails)
+        : "{}";
+    }
+
+    return requestBody;
   }
 
   get messages() {

@@ -12,6 +12,7 @@ class UpdateMovie {
       author: "string",
       rating: "integer",
       movieLength: "integer",
+      movieDetails: "json",
     };
   }
 
@@ -22,7 +23,20 @@ class UpdateMovie {
       author: "trim|escape|strip_links|strip_tags",
       rating: "trim|escape|strip_links|strip_tags|to_Int",
       movieLength: "trim|escape|strip_links|strip_tags|to_Int",
+      movieDetails: "trim|escape|strip_links|strip_tags",
     };
+  }
+
+  get data() {
+    const requestBody = this.ctx.request.all();
+
+    if (requestBody.movieDetails) {
+      requestBody.movieDetails = requestBody.movieDetails
+        ? JSON.stringify(requestBody.movieDetails)
+        : "{}";
+    }
+
+    return requestBody;
   }
 
   get messages() {
