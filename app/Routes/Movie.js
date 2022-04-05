@@ -55,4 +55,27 @@ module.exports = () => {
   Route.delete("movies/:id/:asSlug?", "MovieController.delete").middleware(
     "findMovie"
   );
+
+  /*----------------------------------------------------------------------------------------- */
+  // search for the movie, controller redirects search to the external rest api service
+  // params : correct title of the movie
+  // returns : movie details
+  // title, year, rated, released, runtime, genre, director, writer, actors, plot,
+  // language, country, awards, metascore, imdbRating, imdbVotes, type
+  /*----------------------------------------------------------------------------------------- */
+  Route.get(
+    "moviesSearch/byTitle/:movie",
+    "MovieController.searchByTitle"
+  ).middleware("searchMovie");
+
+  /*----------------------------------------------------------------------------------------- */
+  // search for the movie, controller redirects search to the external rest api service
+  // params : keyword for search
+  // returns : search : aray of the results, totalResults, response
+  // [{title,year,imdbID, type, poster}, ...]
+  /*----------------------------------------------------------------------------------------- */
+  Route.get(
+    "moviesSearch/byKeyword/:movie",
+    "MovieController.searchByKeyword"
+  ).middleware("searchMovie");
 };

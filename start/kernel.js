@@ -40,6 +40,7 @@ const namedMiddleware = {
   findMovie: "App/Middleware/FindMovie",
   findCategory: "App/Middleware/FindCategory",
   filterMovie: "App/Middleware/FilterMovie",
+  searchMovie: "App/Middleware/SearchMovie",
 };
 
 /*

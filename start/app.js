@@ -31,6 +31,7 @@ const providers = [
     "providers",
     "Category/CategoryRepositoryProvider"
   ),
+  path.join(__dirname, "..", "providers", "Axios/AxiosProvider"),
 ];
 
 /*
